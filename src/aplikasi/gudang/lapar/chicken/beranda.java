@@ -33,6 +33,7 @@ public class beranda extends javax.swing.JFrame {
         buttonTransaksi = new javax.swing.JButton();
         buttonPemasok = new javax.swing.JButton();
         buttonTutup = new javax.swing.JButton();
+        buttonLaporan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,6 +74,13 @@ public class beranda extends javax.swing.JFrame {
             }
         });
 
+        buttonLaporan.setText("Laporan");
+        buttonLaporan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLaporanActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -85,12 +93,15 @@ public class beranda extends javax.swing.JFrame {
                     .addComponent(buttonGudang, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(buttonLaporan)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonTutup)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 65, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(58, 58, 58))))
         );
@@ -99,14 +110,16 @@ public class beranda extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(buttonGudang)
                 .addGap(37, 37, 37)
                 .addComponent(buttonTransaksi)
                 .addGap(38, 38, 38)
                 .addComponent(buttonPemasok)
                 .addGap(35, 35, 35)
-                .addComponent(buttonTutup)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonTutup)
+                    .addComponent(buttonLaporan))
                 .addContainerGap())
         );
 
@@ -142,6 +155,11 @@ public class beranda extends javax.swing.JFrame {
     private void buttonTutupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTutupActionPerformed
     System.exit(0);    // TODO add your handling code here:
     }//GEN-LAST:event_buttonTutupActionPerformed
+
+    private void buttonLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLaporanActionPerformed
+    new laporan().setVisible(true);
+            dispose();     // TODO add your handling code here:
+    }//GEN-LAST:event_buttonLaporanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,6 +198,7 @@ public class beranda extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonGudang;
+    private javax.swing.JButton buttonLaporan;
     private javax.swing.JButton buttonPemasok;
     private javax.swing.JButton buttonTransaksi;
     private javax.swing.JButton buttonTutup;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 07 Jan 2024 pada 14.22
+-- Waktu pembuatan: 10 Jan 2024 pada 17.13
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -91,7 +91,10 @@ CREATE TABLE `ttransaksi` (
 
 INSERT INTO `ttransaksi` (`id_transaksi`, `id_barang`, `id_pemasok`, `jumlah`, `satuan_barang`, `jenis_transaksi`, `waktu_transaksi`) VALUES
 (11, 'B02', 'P02', 500, 'gram', 'Masuk', '2024-01-07'),
-(13, 'B01', 'P04', 4000, 'gram', 'Masuk', '2024-01-07');
+(13, 'B01', 'P04', 100, 'gram', 'Masuk', '2024-01-07'),
+(20, 'B01', 'P02', 140, 'gram', 'Masuk', '2024-01-07'),
+(21, 'B02', 'P01', 400, 'gram', 'Masuk', '2024-01-08'),
+(23, 'B02', 'P01', 500, 'gram', 'Keluar', '2024-01-09');
 
 --
 -- Indexes for dumped tables
@@ -125,7 +128,7 @@ ALTER TABLE `ttransaksi`
 -- AUTO_INCREMENT untuk tabel `ttransaksi`
 --
 ALTER TABLE `ttransaksi`
-  MODIFY `id_transaksi` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_transaksi` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

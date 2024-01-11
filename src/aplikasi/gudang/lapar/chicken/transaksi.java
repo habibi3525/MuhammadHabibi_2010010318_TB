@@ -34,7 +34,7 @@ private String idBarangResult;
     loadComboBarang();
     loadComboPemasok();
 
-        String[] judul = {"Id_transaksi", "Id_barang","id_pemasok", "jumlah", "satuan_barang", "jenis_transaksi", "waktu_transaksi"};
+        String[] judul = {"Id_transaksi","id_barang","id_pemasok", "jumlah", "satuan_barang", "jenis_transaksi", "waktu_transaksi"};
         model = new DefaultTableModel(judul, 0);
         jTable1.setModel(model);
         tampilkan();
@@ -45,7 +45,35 @@ private String idBarangResult;
         }
 
             private void tabelMouseClicked(MouseEvent evt) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                int selectedRow = jTable1.getSelectedRow();
+
+    if (selectedRow != -1) {
+        // Mengambil nilai dari tabel yang diklik
+        String idTransaksi = jTable1.getValueAt(selectedRow, 0).toString();
+        String idBarang = jTable1.getValueAt(selectedRow, 1).toString();
+        String idPemasok = jTable1.getValueAt(selectedRow, 2).toString();
+        String jumlah = jTable1.getValueAt(selectedRow, 3).toString();
+        String satuan = jTable1.getValueAt(selectedRow, 4).toString();
+        String jenisTransaksi = jTable1.getValueAt(selectedRow, 5).toString();
+        String waktuTransaksi = jTable1.getValueAt(selectedRow, 6).toString();
+
+        // Mengisi formulir input dengan nilai dari tabel yang diklik
+        comboBarang.setSelectedItem(idBarang);
+        comboPemasok.setSelectedItem(idPemasok);
+        comboMK.setSelectedItem(jenisTransaksi);
+        textJumlah.setText(jumlah);
+        textSatuan.setText(satuan);
+        textIdBarang.setText(idBarang);
+        textIdPemasok.setText(idPemasok);
+
+        // Mengubah format tanggal dari String ke java.util.Date
+        try {
+            java.util.Date date = tglFormat.parse(waktuTransaksi);
+            dateTransaksi.setDate(date);
+        } catch (java.text.ParseException ex) {
+            Logger.getLogger(transaksi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
             }
     });
     
@@ -406,11 +434,88 @@ private String idBarangResult;
     }//GEN-LAST:event_buttonSimpanActionPerformed
 
     private void buttonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditActionPerformed
-        // TODO add your handling code here:
+    int selectedRow = jTable1.getSelectedRow();
+
+    if (selectedRow != -1) {
+        // Mendapatkan nilai dari tabel yang dipilih
+        String idTransaksi = jTable1.getValueAt(selectedRow, 0).toString();
+        String idBarang = textIdBarang.getText(); // Menggunakan idBarang dari textfield
+        String idPemasok = textIdPemasok.getText(); // Menggunakan idPemasok dari textfield
+        String jumlah = textJumlah.getText();
+        String satuan = textSatuan.getText();
+        String jenisTransaksi = comboMK.getSelectedItem().toString();
+        String tanggal = tglFormat.format(dateTransaksi.getDate());
+
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/gudang_lapar", "root", "");
+
+            // Query untuk update data transaksi
+            String queryUpdate = "UPDATE ttransaksi SET id_barang=?, id_pemasok=?, jumlah=?, satuan_barang=?, jenis_transaksi=?, waktu_transaksi=? WHERE id_transaksi=?";
+            try (PreparedStatement psUpdate = cn.prepareStatement(queryUpdate)) {
+                psUpdate.setString(1, idBarang);
+                psUpdate.setString(2, idPemasok);
+                psUpdate.setInt(3, Integer.parseInt(jumlah));
+                psUpdate.setString(4, satuan);
+                psUpdate.setString(5, jenisTransaksi);
+                psUpdate.setString(6, tanggal);
+                psUpdate.setString(7, idTransaksi);
+
+                // Melakukan update data transaksi
+                int hasilUpdate = psUpdate.executeUpdate();
+
+                if (hasilUpdate > 0) {
+                    JOptionPane.showMessageDialog(this, "Data transaksi berhasil diupdate");
+                    tampilkan(); // Memperbarui tampilan tabel
+                    resetForm();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Data transaksi gagal diupdate");
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Koneksi ke database gagal: " + ex.getMessage());
+            Logger.getLogger(transaksi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Pilih baris yang akan diedit");
+    }    // TODO add your handling code here:
     }//GEN-LAST:event_buttonEditActionPerformed
 
     private void buttonHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonHapusActionPerformed
-        // TODO add your handling code here:
+    int selectedRow = jTable1.getSelectedRow();
+
+    if (selectedRow != -1) {
+        int option = JOptionPane.showConfirmDialog(this, "Apakah Anda yakin ingin menghapus data ini?", "Konfirmasi Hapus", JOptionPane.YES_NO_OPTION);
+        
+        if (option == JOptionPane.YES_OPTION) {
+            String idTransaksi = jTable1.getValueAt(selectedRow, 0).toString();
+
+            try {
+                Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/gudang_lapar", "root", "");
+                
+                // Query untuk menghapus data transaksi berdasarkan id_transaksi
+                String queryHapus = "DELETE FROM ttransaksi WHERE id_transaksi=?";
+                try (PreparedStatement psHapus = cn.prepareStatement(queryHapus)) {
+                    psHapus.setString(1, idTransaksi);
+                    
+                    // Melakukan penghapusan data transaksi
+                    int hasilHapus = psHapus.executeUpdate();
+
+                    if (hasilHapus > 0) {
+                        JOptionPane.showMessageDialog(this, "Data transaksi berhasil dihapus");
+                        tampilkan(); // Memperbarui tampilan tabel
+                        resetForm();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Data transaksi gagal dihapus");
+                    }
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Koneksi ke database gagal: " + ex.getMessage());
+                Logger.getLogger(transaksi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Pilih baris yang akan dihapus");
+    }    // TODO add your handling code here:
     }//GEN-LAST:event_buttonHapusActionPerformed
 
     private void comboBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBarangActionPerformed
@@ -500,13 +605,11 @@ private String idBarangResult;
     private javax.swing.JTextField textSatuan;
     // End of variables declaration//GEN-END:variables
 private void tampilkan() {
-    int row = model.getRowCount();
-    for (int a = 0; a < row; a++) {
-        model.removeRow(0);
-    }
-
-    try {
+try {
         Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/gudang_lapar", "root", "");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Menghapus baris yang sudah ada
+
         ResultSet rs = cn.createStatement().executeQuery("SELECT * FROM ttransaksi");
 
         while (rs.next()) {
@@ -619,5 +722,14 @@ private void loadComboBarang () {
         e.printStackTrace();
         JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
+}
+
+    private void resetForm() {
+    textIdBarang.setText("");
+    textIdPemasok.setText("");
+    textJumlah.setText("");
+    textSatuan.setText("");
+    comboMK.setSelectedIndex(0);
+    dateTransaksi.setDate(null);
 }
 }
